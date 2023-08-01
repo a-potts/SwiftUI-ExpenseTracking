@@ -23,7 +23,14 @@ struct Transaction: Identifiable {
     var isExpense: Bool
     var isEdited: Bool
     
+    //Computed property that will be used in the transaction row 
+    var dateParse: Date {
+        date.dateParse()
+    }
     
+    var signedAmount: Double {
+        return type == TransactionType.credit.rawValue ? amount : -amount
+    }
     
 }
 

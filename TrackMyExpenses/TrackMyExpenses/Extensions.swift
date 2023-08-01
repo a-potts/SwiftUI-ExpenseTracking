@@ -19,3 +19,28 @@ extension Color {
 
     
 }
+
+
+//Date formatters are expensive operations so ensure it is lazy
+extension DateFormatter {
+    
+    static let allNumericUSA: DateFormatter = {
+        print("Init Date Formatter")
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        
+        return formatter
+    }()
+    
+}
+
+extension String {
+    
+    func dateParse() -> Date {
+        guard let parseDate = DateFormatter.allNumericUSA.date(from: self) else {
+             return Date()
+        }
+        return parseDate
+    }
+    
+}
