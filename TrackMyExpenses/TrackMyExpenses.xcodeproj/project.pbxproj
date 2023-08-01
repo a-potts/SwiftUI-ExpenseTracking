@@ -14,6 +14,7 @@
 		535E94292A79468100EA0221 /* TrackMyExpensesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94282A79468100EA0221 /* TrackMyExpensesTests.swift */; };
 		535E94332A79468100EA0221 /* TrackMyExpensesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94322A79468100EA0221 /* TrackMyExpensesUITests.swift */; };
 		535E94352A79468100EA0221 /* TrackMyExpensesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94342A79468100EA0221 /* TrackMyExpensesUITestsLaunchTests.swift */; };
+		535E94422A7998AB00EA0221 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94412A7998AB00EA0221 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		535E942E2A79468100EA0221 /* TrackMyExpensesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackMyExpensesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		535E94322A79468100EA0221 /* TrackMyExpensesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackMyExpensesUITests.swift; sourceTree = "<group>"; };
 		535E94342A79468100EA0221 /* TrackMyExpensesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackMyExpensesUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		535E94412A7998AB00EA0221 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			children = (
 				535E94172A79467F00EA0221 /* TrackMyExpensesApp.swift */,
 				535E94192A79467F00EA0221 /* ContentView.swift */,
+				535E94412A7998AB00EA0221 /* Extensions.swift */,
 				535E941B2A79468100EA0221 /* Assets.xcassets */,
 				535E941D2A79468100EA0221 /* Preview Content */,
 			);
@@ -258,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				535E941A2A79467F00EA0221 /* ContentView.swift in Sources */,
+				535E94422A7998AB00EA0221 /* Extensions.swift in Sources */,
 				535E94182A79467F00EA0221 /* TrackMyExpensesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
