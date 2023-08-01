@@ -50,6 +50,7 @@ struct Category {
 
 
 extension Category {
+    //Main Category
     static let autoAndTransport = Category(id: 1, name: "Auto & Transport", icon: .car_alt)
     static let billsAndUtilities = Category(id: 2, name: "Bills & Utilities", icon: .file_invoice_dollar)
     static let entertainment = Category (id: 3, name: "Entertainment", icon: .film)
@@ -60,6 +61,8 @@ extension Category {
     "Income", icon: .dollar_sign)
     static let shopping = Category(id: 8, name: "Shopping", icon: .shopping_cart)
     static let transfer = Category(id: 9, name: "Transfer", icon: .exchange_alt)
+    
+    //Sub Category
     static let publicTransportation = Category(id: 101, name: "Public Transportation", icon: .bus, mainCategoryId: 1)
     static let taxi = Category(id: 102, name: "Taxi", icon: .taxi, mainCategoryId: 1)
     static let mobilePhone = Category(id: 201, name: "Mobile Phone", icon: .mobile_alt, mainCategoryId: 2)
@@ -76,4 +79,38 @@ extension Category {
             
     static let creditCardPayment = Category(id: 901, name: "Credit Card Payment", icon:
             .exchange_alt, mainCategoryId: 9)
+}
+
+extension Category {
+    
+    static let categories: [Category] = [
+        .autoAndTransport,
+        .billsAndUtilities,
+        .entertainment,
+        .feesAndCharges,
+        .foodAndDining,
+        .home,
+        .income,
+        .shopping,
+        .transfer
+    
+    ]
+    
+    static let subCategories: [Category] = [
+        .publicTransportation,
+        .taxi,
+        .mobilePhone,
+        .moviesAndDVDs,
+        .bankFee,
+        .financeCharge,
+        .groceries,
+        .restaurants,
+        .rent,
+        .homeSupplies,
+        .paycheque,
+        .software
+    
+    
+    ]
+    
 }
