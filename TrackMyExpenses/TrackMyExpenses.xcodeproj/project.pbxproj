@@ -15,6 +15,7 @@
 		535E94332A79468100EA0221 /* TrackMyExpensesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94322A79468100EA0221 /* TrackMyExpensesUITests.swift */; };
 		535E94352A79468100EA0221 /* TrackMyExpensesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94342A79468100EA0221 /* TrackMyExpensesUITestsLaunchTests.swift */; };
 		535E94422A7998AB00EA0221 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94412A7998AB00EA0221 /* Extensions.swift */; };
+		535E94442A799C0C00EA0221 /* TransactionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94432A799C0C00EA0221 /* TransactionModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		535E94322A79468100EA0221 /* TrackMyExpensesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackMyExpensesUITests.swift; sourceTree = "<group>"; };
 		535E94342A79468100EA0221 /* TrackMyExpensesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackMyExpensesUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		535E94412A7998AB00EA0221 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		535E94432A799C0C00EA0221 /* TransactionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 			children = (
 				535E94172A79467F00EA0221 /* TrackMyExpensesApp.swift */,
 				535E94192A79467F00EA0221 /* ContentView.swift */,
+				535E94432A799C0C00EA0221 /* TransactionModel.swift */,
 				535E94412A7998AB00EA0221 /* Extensions.swift */,
 				535E941B2A79468100EA0221 /* Assets.xcassets */,
 				535E941D2A79468100EA0221 /* Preview Content */,
@@ -260,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				535E94442A799C0C00EA0221 /* TransactionModel.swift in Sources */,
 				535E941A2A79467F00EA0221 /* ContentView.swift in Sources */,
 				535E94422A7998AB00EA0221 /* Extensions.swift in Sources */,
 				535E94182A79467F00EA0221 /* TrackMyExpensesApp.swift in Sources */,
