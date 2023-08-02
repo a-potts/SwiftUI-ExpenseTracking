@@ -38,6 +38,7 @@ struct ContentView: View {
         }
         //modifier
         .navigationViewStyle(.stack)
+        .accentColor(.primary)
     }
 }
 

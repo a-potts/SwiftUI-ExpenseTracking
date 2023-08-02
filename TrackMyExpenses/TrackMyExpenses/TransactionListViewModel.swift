@@ -7,9 +7,10 @@
 
 import Foundation
 import Combine
+import Collections
 
 //Type Alias
-typealias TransactionGroup = [String: [Transaction]]
+typealias TransactionGroup = OrderedDictionary<String, [Transaction]>
 
 // Observable object is part of the combine framewrok which turns any object into  publisher & nottifes its subscribers to refresh their view
 final class TransactionListViewModel: ObservableObject {
