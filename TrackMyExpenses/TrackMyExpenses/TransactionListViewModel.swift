@@ -8,6 +8,9 @@
 import Foundation
 import Combine
 
+//Type Alias
+typealias TransactionGroup = [String: [Transaction]]
+
 // Observable object is part of the combine framewrok which turns any object into  publisher & nottifes its subscribers to refresh their view
 final class TransactionListViewModel: ObservableObject {
     
@@ -53,5 +56,14 @@ final class TransactionListViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+    
+    func groupTransactionByMonth() -> TransactionGroup {
+        guard !transaction.isEmpty else {return [:]}
+        
+        let groupTransaction = TransactionGroup(grouping: transaction) { $0.month }
+        
+        return groupTransaction
+    }
+    
     
 }

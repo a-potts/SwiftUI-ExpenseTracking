@@ -24,6 +24,14 @@ struct Transaction: Identifiable, Decodable, Hashable {
     var isExpense: Bool
     var isEdited: Bool
     
+    var icon: FontAwesomeCode {
+        //optinal binding control flow
+        if let category = Category.all.first(where: {$0.id == categoryId}) {
+            return category.icon
+        }
+        return .question
+    }
+    
     //Computed property that will be used in the transaction row 
     var dateParse: Date {
         date.dateParse()
@@ -31,6 +39,10 @@ struct Transaction: Identifiable, Decodable, Hashable {
     
     var signedAmount: Double {
         return type == TransactionType.credit.rawValue ? amount : -amount
+    }
+    
+    var month: String {
+        dateParse.formatted(.dateTime.year().month(.wide))
     }
     
 }
@@ -112,5 +124,7 @@ extension Category {
     
     
     ]
+    
+    static let all: [Category] = categories + subCategories
     
 }
