@@ -70,9 +70,11 @@ struct AddNewExpense: View {
     
     private func addExpense(){
         
+        let date = Date()
+        
         let expense: [String : Any] = [
             "account": account,
-            "amount": amount,
+            "amount": Double(amount) as Any,
             "category": category,
             "date": date,
             "institution": institution,

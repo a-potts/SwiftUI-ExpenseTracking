@@ -56,7 +56,7 @@ class AddExpenseViewModel: ObservableObject {
                     let type = data["type"] as? String ?? ""
                     let isPending = data[""] as? Bool ?? false
                     let isTransfer = data[""] as? Bool ?? false
-                    let isExpense = data[""] as? Bool ?? false
+                    let isExpense = data[""] as? Bool ?? true
                     let isEdited = data[""] as? Bool ?? false
 
 

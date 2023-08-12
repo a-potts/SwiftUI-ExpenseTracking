@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import Collections
+import FirebaseFirestore
 
 //Type Alias
 typealias TransactionGroup = OrderedDictionary<String, [Transaction]>
@@ -23,8 +24,62 @@ final class TransactionListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init(){
-        getTransactions()
+        getExpenses()
     }
+    
+    
+    //MARK: Fetch From Database
+    func getExpenses(){
+        // create db instance
+        
+        let db = Firestore.firestore()
+        
+        // create document reference using above with dot syntax
+        
+        let docRef = db.collection("Transactions")
+        
+        //use above url to iterate through the snapshot
+        
+        docRef.getDocuments { snapshot, error in
+            guard error == nil else {
+                print (error!.localizedDescription)
+                return
+                
+            }
+            
+            if let snapshot = snapshot {
+                //Iterate through the snapshot values & append each value to the property array
+                for document in snapshot.documents {
+                    let data = document.data()
+                    
+                    let account = data["account"] as? String ?? ""
+                    let amount = data["amount"] as? Double ?? 0.0
+                    let category = data["category"] as? String ?? ""
+                    let categoryId = data[""] as? Int ?? 1
+                    let date = data["date"] as? String ?? ""
+                    let institution = data["institution"] as? String ?? ""
+                    let merchant = data["merchant"] as? String ?? ""
+                    let id = data[""] as? Int ?? 1
+                    let type = data["type"] as? String ?? ""
+                    let isPending = data[""] as? Bool ?? false
+                    let isTransfer = data[""] as? Bool ?? false
+                    let isExpense = data[""] as? Bool ?? false
+                    let isEdited = data[""] as? Bool ?? false
+
+
+                    
+                    
+                    
+                    let newExpense = Transaction(id: id, date: date, institution: institution, account: account, merchant: merchant, amount: amount, type: type, categoryId: categoryId, category: category, isPending: isPending, isTransfer: isTransfer, isExpense: isExpense, isEdited: isEdited)
+                    self.transaction.append(newExpense)
+                    
+                }
+            }
+            
+        }
+        
+    }
+    
     
     func getTransactions(){
         
@@ -71,9 +126,15 @@ final class TransactionListViewModel: ObservableObject {
     
     func accumulateTransaction() -> TransactionPrefixSum {
         print("Accumulate transactions")
-        guard !transaction.isEmpty else {return []}
+        guard !transaction.isEmpty else {
+            print("EMPTY - \(transaction.count)")
+            return []
+            
+        }
         
-        let today = "02/17/2022".dateParse() // should be Date() FIX
+        print("FULL - \(transaction.count)")
+        
+        let today = "08/11/2023".dateParse() // should be Date() FIX
         let dateInterval = Calendar.current.dateInterval(of: .month, for: today)!
         print("dateInterval", dateInterval)
         
@@ -81,12 +142,22 @@ final class TransactionListViewModel: ObservableObject {
         var accumulatedSum = TransactionPrefixSum()
         
         for date in stride(from: dateInterval.start, through: today, by: 60 * 60 * 24) {
-            let dailyExpenses = transaction.filter({ $0.dateParse == date && $0.isExpense })
+            
+            //MARK: I believe this is where the error is happening, transaction array is full but daily expense is empty
+            let dailyExpenses = transaction.filter({ $0.dateParse == date })
+            print("Daily Expense \(dailyExpenses)")
+            print("Transaction Expense \(transaction)")
+
             let dailyTotal = dailyExpenses.reduce(0) { $0 - $1.signedAmount }
             
+            print("Daily Total \(dailyTotal)")
+
             sum += dailyTotal
             sum = sum.roundedTo2Digits()
             accumulatedSum.append((date.formatted(), sum))
+            
+            //MARK: Error - daily total & sum are 0
+            
             print(date.formatted(), "daily total", dailyTotal, "sum", sum)
             
         }
