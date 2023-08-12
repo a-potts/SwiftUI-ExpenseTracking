@@ -60,6 +60,18 @@ struct ContentView: View {
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(Color.icon, .primary)
                 }
+                //MARK: ADD Button for Navigation to Form
+                
+                ToolbarItem {
+                    
+                    NavigationLink(destination: AddNewExpense()){
+                        
+                        Image(systemName: "plus")
+                        // modifier
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(Color.icon, .primary)
+                    }
+                }
             }
         }
         //modifier

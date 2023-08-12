@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct TrackMyExpensesApp: App {
+    
+    init(){
+        FirebaseApp.configure()
+    }
     
     //Wrap it in state object so it can follow the lifecycle of the app
     @StateObject var transactionListVM = TransactionListViewModel()
