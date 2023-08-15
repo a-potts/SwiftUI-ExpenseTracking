@@ -16,12 +16,16 @@ struct AddNewExpense: View {
     @State private var date: String = ""
     @State private var institution: String = ""
     @State private var merchant: String = ""
+    @State private var type: String = ""
+
 
 
 
     
     var body: some View {
         NavigationView {
+            
+            
             
             Form {
                 Section(header: Text("Account")) {
@@ -32,12 +36,9 @@ struct AddNewExpense: View {
                     TextField("Enter Amount", text: $amount)
                 }
                 
+                //MARK: Make this a Menu selection
                 Section(header: Text("Category")) {
                     TextField("Enter Category", text: $category)
-                }
-                
-                Section(header: Text("Date")) {
-                    TextField("Enter Date", text: $date)
                 }
                 
                 Section(header: Text("Institution")) {
@@ -46,6 +47,10 @@ struct AddNewExpense: View {
                 
                 Section(header: Text("Merchant")) {
                     TextField("Enter Merchant", text: $merchant)
+                }
+                
+                Section(header: Text("Type")) {
+                    TextField("Enter Debit or Credit", text: $type)
                 }
         
                 Button {
@@ -58,6 +63,7 @@ struct AddNewExpense: View {
                 }
                 .background(.green)
                 .cornerRadius(5)
+                .navigationTitle("Add New Expense")
                 
                 
 
@@ -70,15 +76,26 @@ struct AddNewExpense: View {
     
     private func addExpense(){
         
-        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        let date = formatter.string(from: Date.now)
+        
         
         let expense: [String : Any] = [
             "account": account,
             "amount": Double(amount) as Any,
             "category": category,
+            "categoryId": Int("1") as Any,
             "date": date,
             "institution": institution,
             "merchant": merchant,
+            "type" : type,
+            
+            //MARK: Fix these later by adding menu selections above for the values below
+            "isEdited" : false,
+            "isExpense" : true,
+            "isPending" : false,
+            "isTransfer" : false
             
             ]
         

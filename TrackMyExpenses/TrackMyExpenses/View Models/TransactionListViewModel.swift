@@ -134,16 +134,22 @@ final class TransactionListViewModel: ObservableObject {
         
         print("FULL - \(transaction.count)")
         
-        let today = "08/11/2023".dateParse() // should be Date() FIX
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        let newToday = formatter.string(from: Date.now)
+        
+        let today = newToday.dateParse() // should be Date() FIX
         let dateInterval = Calendar.current.dateInterval(of: .month, for: today)!
         print("dateInterval", dateInterval)
         
+        //single value
         var sum: Double = 0
+        //set of values
         var accumulatedSum = TransactionPrefixSum()
         
         for date in stride(from: dateInterval.start, through: today, by: 60 * 60 * 24) {
             
-            //MARK: I believe this is where the error is happening, transaction array is full but daily expense is empty
+            
             let dailyExpenses = transaction.filter({ $0.dateParse == date })
             print("Daily Expense \(dailyExpenses)")
             print("Transaction Expense \(transaction)")
