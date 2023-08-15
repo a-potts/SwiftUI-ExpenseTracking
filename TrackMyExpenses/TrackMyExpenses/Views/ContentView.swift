@@ -12,12 +12,16 @@ struct ContentView: View {
     @EnvironmentObject var transactionListsVM: TransactionListViewModel
     //var demoData: [Double] = [8,2,4,5,7,9,12]
     
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStackLayout(alignment: .leading, spacing: 24){
+                    
+
+                    
                     //MARK: Title
-                    Text("Overview")
+                    Text("Total Expenses for \(Date().formatted(Date.FormatStyle().month(.wide)))")
                         .font(.title2)
                         .bold()
                     

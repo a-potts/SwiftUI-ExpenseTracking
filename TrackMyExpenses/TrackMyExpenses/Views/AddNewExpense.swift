@@ -80,6 +80,10 @@ struct AddNewExpense: View {
         formatter.dateFormat = "MM/dd/yyyy"
         let date = formatter.string(from: Date.now)
         
+        let array = TransactionListViewModel()
+        var count = array.transaction.count
+        
+        
         
         let expense: [String : Any] = [
             "account": account,
@@ -87,6 +91,7 @@ struct AddNewExpense: View {
             "category": category,
             "categoryId": Int("1") as Any,
             "date": date,
+            "id": count += 1,
             "institution": institution,
             "merchant": merchant,
             "type" : type,

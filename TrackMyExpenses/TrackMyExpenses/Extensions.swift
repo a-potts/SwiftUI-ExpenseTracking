@@ -32,6 +32,14 @@ extension DateFormatter {
         return formatter
     }()
     
+    static let contentDate: DateFormatter = {
+        print("Content Date")
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM"
+        
+        return formatter
+    }()
+    
 }
 
 extension String {
@@ -53,6 +61,8 @@ extension Date: Strideable {
         return self.formatted(.dateTime.year().month().day())
     }
 }
+
+
 
 extension Double {
     func roundedTo2Digits() -> Double {
