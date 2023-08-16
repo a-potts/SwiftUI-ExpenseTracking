@@ -18,7 +18,9 @@ struct AddNewExpense: View {
     @State private var merchant: String = ""
     @State private var type: String = ""
 
-
+    //@state is designed to be shared
+    //@state should be used when creating values, if youre just reading it or modifyng it use @observed object
+    @EnvironmentObject private var transaction: TransactionListViewModel
 
 
     
@@ -81,7 +83,9 @@ struct AddNewExpense: View {
         let date = formatter.string(from: Date.now)
         
         let array = TransactionListViewModel()
-        var count = array.transaction.count
+        var count = self.transaction.transaction.count
+        print("Count Here: \(count)")
+        let totalNewId = count + 1
         
         
         
@@ -91,7 +95,7 @@ struct AddNewExpense: View {
             "category": category,
             "categoryId": Int("1") as Any,
             "date": date,
-            "id": count += 1,
+            "id": totalNewId as Any,
             "institution": institution,
             "merchant": merchant,
             "type" : type,
@@ -115,7 +119,19 @@ struct AddNewExpense: View {
 }
 
 struct AddNewExpense_Previews: PreviewProvider {
+    static let transactionListVM: TransactionListViewModel = {
+     let transactionListVM = TransactionListViewModel()
+     transactionListVM.transaction = transactionListPreviewData
+     return transactionListVM
+ }()
+    
     static var previews: some View {
-        AddNewExpense()
+        Group{
+            AddNewExpense()
+            
+                .preferredColorScheme(.dark)
+        }
+        .environmentObject(transactionListVM)
     }
+        
 }

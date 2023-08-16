@@ -58,19 +58,20 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 //MARK: Notiifcation Icon
-                ToolbarItem {
-                    Image(systemName: "bell.badge")
-                        // modifier
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(Color.icon, .primary)
-                }
+//                ToolbarItem {
+//                    Image(systemName: "bell.badge")
+//                        // modifier
+//                        .symbolRenderingMode(.palette)
+//                        .foregroundStyle(Color.icon, .primary)
+//                }
                 //MARK: ADD Button for Navigation to Form
                 
                 ToolbarItem {
                     
                     NavigationLink(destination: AddNewExpense()){
                         
-                        Image(systemName: "plus")
+                        Text("Add")
+                        Image(systemName: "square.and.pencil")
                         // modifier
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(Color.icon, .primary)

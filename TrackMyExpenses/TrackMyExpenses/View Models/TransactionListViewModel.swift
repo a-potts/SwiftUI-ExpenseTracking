@@ -19,6 +19,7 @@ typealias TransactionPrefixSum = [(String, Double)]
 final class TransactionListViewModel: ObservableObject {
     
     //Responsible for sending notifgications to the subscribers when values are changed
+    // Please publish announcements when this value changes
     @Published var transaction: [Transaction] = []
     
     private var cancellables = Set<AnyCancellable>()

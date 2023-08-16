@@ -134,13 +134,12 @@
 		535E94162A79467F00EA0221 /* TrackMyExpenses */ = {
 			isa = PBXGroup;
 			children = (
+				53BF70E32A8D444200033BC4 /* Models */,
 				53BF70DD2A87012B00033BC4 /* View Models */,
 				53D9B35F2A86F08500F63689 /* Views */,
 				535E94172A79467F00EA0221 /* TrackMyExpensesApp.swift */,
 				535E944E2A79CB6100EA0221 /* RecentTransactionList.swift */,
-				535E94472A799E5F00EA0221 /* TransactionRow.swift */,
 				535E94502A7ACADF00EA0221 /* TransationLitst.swift */,
-				535E94432A799C0C00EA0221 /* TransactionModel.swift */,
 				535E94412A7998AB00EA0221 /* Extensions.swift */,
 				535E941B2A79468100EA0221 /* Assets.xcassets */,
 				535E941D2A79468100EA0221 /* Preview Content */,
@@ -190,11 +189,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		53BF70E32A8D444200033BC4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				535E94432A799C0C00EA0221 /* TransactionModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		53D9B35F2A86F08500F63689 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				535E94192A79467F00EA0221 /* ContentView.swift */,
 				53BF70DB2A86FD1F00033BC4 /* AddNewExpense.swift */,
+				535E94472A799E5F00EA0221 /* TransactionRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

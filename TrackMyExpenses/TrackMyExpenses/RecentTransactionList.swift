@@ -34,7 +34,7 @@ struct RecentTransactionList: View {
             .padding(.top)
             
             //MARK: Recent Transactions
-            ForEach(Array(transactionListVM.transaction.prefix(5).enumerated()),  id: \.element) { index, transaction in
+            ForEach(Array(transactionListVM.transaction.prefix(4).enumerated()),  id: \.element) { index, transaction in
                 TransactionRow(transaction: transaction)
                 
                 Divider()
