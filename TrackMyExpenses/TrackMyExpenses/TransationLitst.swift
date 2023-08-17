@@ -14,8 +14,9 @@ struct TransationLitst: View {
     
     var body: some View {
         VStack {
-            List {
+        List {
                 //MARK: Transactions Group
+                //Currently there is an error, the ID fetched is 1 repeating
                 ForEach(Array(transactionListVM.groupTransactionByMonth()), id: \.key) {month, transaction in
                     Section {
                         //MARK: Transaction List

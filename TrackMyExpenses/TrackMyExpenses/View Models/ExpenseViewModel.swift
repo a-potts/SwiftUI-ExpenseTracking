@@ -52,7 +52,7 @@ class AddExpenseViewModel: ObservableObject {
                     let date = data["date"] as? String ?? ""
                     let institution = data["institution"] as? String ?? ""
                     let merchant = data["merchant"] as? String ?? ""
-                    let id = data[""] as? Int ?? 1
+                    let expenseId = data[""] as? Int ?? 1
                     let type = data["type"] as? String ?? ""
                     let isPending = data[""] as? Bool ?? false
                     let isTransfer = data[""] as? Bool ?? false
@@ -63,7 +63,7 @@ class AddExpenseViewModel: ObservableObject {
                     
                     
                     
-                    let newExpense = Transaction(id: id, date: date, institution: institution, account: account, merchant: merchant, amount: amount, type: type, categoryId: categoryId, category: category, isPending: isPending, isTransfer: isTransfer, isExpense: isExpense, isEdited: isEdited)
+                    let newExpense = Transaction(expenseId: expenseId, date: date, institution: institution, account: account, merchant: merchant, amount: amount, type: type, categoryId: categoryId, category: category, isPending: isPending, isTransfer: isTransfer, isExpense: isExpense, isEdited: isEdited)
                     self.expense.append(newExpense)
                     
                 }

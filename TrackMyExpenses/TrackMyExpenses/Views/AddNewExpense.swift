@@ -82,8 +82,8 @@ struct AddNewExpense: View {
         formatter.dateFormat = "MM/dd/yyyy"
         let date = formatter.string(from: Date.now)
         
-        let array = TransactionListViewModel()
-        var count = self.transaction.transaction.count
+       
+        let count = self.transaction.transaction.count
         print("Count Here: \(count)")
         let totalNewId = count + 1
         
@@ -119,10 +119,18 @@ struct AddNewExpense: View {
 }
 
 struct AddNewExpense_Previews: PreviewProvider {
+    
+    //This is a trick to force data to the preview model
+    //Need to add this since we declared a insatce of the property above, it will have no value when the process reaches it so we must set one
+    //Declare a lazy static constant
     static let transactionListVM: TransactionListViewModel = {
+        //inside the closure create an instance of TLVM
      let transactionListVM = TransactionListViewModel()
      transactionListVM.transaction = transactionListPreviewData
      return transactionListVM
+        
+        //init static constant
+        
  }()
     
     static var previews: some View {

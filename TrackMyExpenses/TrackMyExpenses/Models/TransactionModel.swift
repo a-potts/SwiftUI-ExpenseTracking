@@ -10,7 +10,7 @@ import SwiftUIFontIcon
 
 struct Transaction: Identifiable, Decodable, Hashable {
     
-    let id: Int
+    let expenseId: Int
     let date: String
     let institution: String
     let account: String
@@ -23,6 +23,8 @@ struct Transaction: Identifiable, Decodable, Hashable {
     var isTransfer: Bool
     var isExpense: Bool
     var isEdited: Bool
+    
+    var id: UUID = UUID()
     
     var icon: FontAwesomeCode {
         //optinal binding control flow
