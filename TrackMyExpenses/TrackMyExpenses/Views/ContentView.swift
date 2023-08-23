@@ -12,8 +12,11 @@ struct ContentView: View {
     @EnvironmentObject var transactionListsVM: TransactionListViewModel
     //var demoData: [Double] = [8,2,4,5,7,9,12]
     
-    
+    @State var lineChart = LineChart()
+  
     var body: some View {
+       
+        
         NavigationView {
             ScrollView {
                 VStackLayout(alignment: .leading, spacing: 24){
@@ -26,21 +29,23 @@ struct ContentView: View {
                         .bold()
                     
                     //MARK: Chart
-                    let data = transactionListsVM.accumulateTransaction()
+                    var data = transactionListsVM.accumulateTransaction()
                     if !data.isEmpty {
-                        let totalExpenses = data.last?.1 ?? 0
+                        var totalExpenses = data.last?.1 ?? 0
                         CardView {
                             VStack(alignment: .leading) {
                                 ChartLabel(totalExpenses.formatted(.currency(code: "USD")), type: .title, format: "$%.02f")
                                 
-                                LineChart()
+                                lineChart
                             }
                                 .background(Color.systemBackground)
 
                                 
                         }
                         //Modifiers
+                        
                         .data(data)
+                        
                         .chartStyle(ChartStyle(backgroundColor: Color.systemBackground, foregroundColor: ColorGradient(Color.icon.opacity(0.4), Color.icon)))
                     
                     .frame(height: 300)
@@ -50,6 +55,7 @@ struct ContentView: View {
                     //MARK: Transaction List
                     RecentTransactionList()
                 }
+                
                 .padding()
                 .frame(maxWidth: .infinity)
             }

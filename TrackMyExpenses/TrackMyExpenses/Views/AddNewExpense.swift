@@ -22,7 +22,7 @@ struct AddNewExpense: View {
     //@state should be used when creating values, if youre just reading it or modifyng it use @observed object
     @EnvironmentObject private var transaction: TransactionListViewModel
 
-
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationView {
@@ -57,6 +57,15 @@ struct AddNewExpense: View {
         
                 Button {
                     addExpense()
+                    
+                    
+                    
+                  
+                   let _ = transaction.accumulateTransaction()
+                    
+                    
+                
+                    dismiss()
                 } label: {
                     Text("Enter New Expense")
                         .padding()
@@ -113,7 +122,11 @@ struct AddNewExpense: View {
      
         db.addDocument(data: expense)
         
+        transaction.transaction.append(Transaction(expenseId: self.transaction.transaction.count + 1, date: date, institution: institution, account: account, merchant: merchant, amount: Double(amount)!, type: "Debit", categoryId: 1, category: category, isPending: false, isTransfer: false, isExpense: true, isEdited: false))
+        
+        
     }
+    
     
     
 }
