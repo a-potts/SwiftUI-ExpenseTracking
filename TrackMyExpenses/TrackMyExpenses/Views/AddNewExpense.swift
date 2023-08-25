@@ -17,7 +17,10 @@ struct AddNewExpense: View {
     @State private var institution: String = ""
     @State private var merchant: String = ""
     @State private var type: String = ""
+    @State private var selectedCategory = Category.autoAndTransport
 
+    
+    
     //@state is designed to be shared
     //@state should be used when creating values, if youre just reading it or modifyng it use @observed object
     @EnvironmentObject private var transaction: TransactionListViewModel
@@ -30,6 +33,7 @@ struct AddNewExpense: View {
             
             
             Form {
+                
                 Section(header: Text("Account")) {
                     TextField("Account Name", text: $account)
                 }
@@ -40,7 +44,16 @@ struct AddNewExpense: View {
                 
                 //MARK: Make this a Menu selection
                 Section(header: Text("Category")) {
-                    TextField("Enter Category", text: $category)
+                    Picker("Category", selection: $selectedCategory) {
+                        
+                        //For each auto assigns tags per each item id, sometimes it doesnt work so add the tag modifier anyway
+                        ForEach(Category.all, id: \.self) { category in
+                            Text(category.name)
+                                
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    
                 }
                 
                 Section(header: Text("Institution")) {
@@ -54,17 +67,17 @@ struct AddNewExpense: View {
                 Section(header: Text("Type")) {
                     TextField("Enter Debit or Credit", text: $type)
                 }
-        
+                
                 Button {
                     addExpense()
                     
                     
                     
-                  
-                   let _ = transaction.accumulateTransaction()
+                    
+                    let _ = transaction.accumulateTransaction()
                     
                     
-                
+                    
                     dismiss()
                 } label: {
                     Text("Enter New Expense")
@@ -77,9 +90,10 @@ struct AddNewExpense: View {
                 .navigationTitle("Add New Expense")
                 
                 
-
+                
             }
-
+            
+            
         }
     }
     
@@ -96,13 +110,21 @@ struct AddNewExpense: View {
         print("Count Here: \(count)")
         let totalNewId = count + 1
         
+        var catInt = 0
+        
+//        for cat in Category.all {
+//            if cat.name == category {
+//                catInt = cat.id
+//            }
+//        }
+        
         
         
         let expense: [String : Any] = [
             "account": account,
             "amount": Double(amount) as Any,
-            "category": category,
-            "categoryId": Int("1") as Any,
+            "category": selectedCategory.name,      // This must be a string for Firestore
+            "categoryId": selectedCategory.id as Any,  // This must be the Int which identifies the Icon Category
             "date": date,
             "id": totalNewId as Any,
             "institution": institution,
@@ -122,7 +144,7 @@ struct AddNewExpense: View {
      
         db.addDocument(data: expense)
         
-        transaction.transaction.append(Transaction(expenseId: self.transaction.transaction.count + 1, date: date, institution: institution, account: account, merchant: merchant, amount: Double(amount)!, type: "Debit", categoryId: 1, category: category, isPending: false, isTransfer: false, isExpense: true, isEdited: false))
+        transaction.transaction.append(Transaction(expenseId: self.transaction.transaction.count + 1, date: date, institution: institution, account: account, merchant: merchant, amount: Double(amount)!, type: "Debit", categoryId: selectedCategory.id, category: selectedCategory.name, isPending: false, isTransfer: false, isExpense: true, isEdited: false))
         
         
     }
@@ -153,6 +175,7 @@ struct AddNewExpense_Previews: PreviewProvider {
                 .preferredColorScheme(.dark)
         }
         .environmentObject(transactionListVM)
+        
     }
         
 }

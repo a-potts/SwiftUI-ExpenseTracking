@@ -54,7 +54,7 @@ enum TransactionType: String {
     case credit = "credit"
 }
 
-struct Category {
+struct Category: Hashable, Identifiable {
     let id: Int
     let name: String
     let icon: FontAwesomeCode
