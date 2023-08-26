@@ -56,7 +56,7 @@ final class TransactionListViewModel: ObservableObject {
                     let account = data["account"] as? String ?? ""
                     let amount = data["amount"] as? Double ?? 0.0
                     let category = data["category"] as? String ?? ""
-                    let categoryId = data[""] as? Int ?? 1
+                    let categoryId = data["categoryId"] as? Int ?? 1
                     let date = data["date"] as? String ?? ""
                     let institution = data["institution"] as? String ?? ""
                     let merchant = data["merchant"] as? String ?? ""
