@@ -13,14 +13,23 @@ struct TrackMyExpensesApp: App {
     
     init(){
         FirebaseApp.configure()
+        
     }
+    
     
     //Wrap it in state object so it can follow the lifecycle of the app
     @StateObject var transactionListVM = TransactionListViewModel()
+    @StateObject var userVM = UserViewModel()
+    
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(transactionListVM)
+            
+            LoginView()
+                  .environmentObject(userVM)
+            
+//            ContentView()
+//                .environmentObject(transactionListVM)
         }
     }
 }

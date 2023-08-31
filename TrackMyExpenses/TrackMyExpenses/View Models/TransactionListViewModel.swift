@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import Collections
 import FirebaseFirestore
+import FirebaseAuth
 
 //Type Alias
 typealias TransactionGroup = OrderedDictionary<String, [Transaction]>
@@ -25,19 +26,28 @@ final class TransactionListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init(){
-        getExpenses()
+       // getExpenses()
+        //MARK: I commented this out because it causes a double fetch, bypassing the UUID depedency on the object causing fetched data for any user instead of specific one
     }
     
     
     //MARK: Fetch From Database
     func getExpenses(){
+        
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("ERROR NO UUID")
+            return
+        }
+        
+    
+        
         // create db instance
         
         let db = Firestore.firestore()
         
         // create document reference using above with dot syntax
         
-        let docRef = db.collection("Transactions")
+        let docRef = db.collection("users").document(uid).collection("Transactions")
         
         //use above url to iterate through the snapshot
         

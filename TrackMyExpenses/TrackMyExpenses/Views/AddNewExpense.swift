@@ -7,6 +7,11 @@
 
 import SwiftUI
 import FirebaseFirestore
+import Firebase
+import FirebaseAuth
+
+//MARK: Getting issue where I cant iport storage in order to put data to the user below
+
 
 struct AddNewExpense: View {
     
@@ -118,7 +123,17 @@ struct AddNewExpense: View {
 //            }
 //        }
         
+        //MARK: PUT Data to Current User
         
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+       // let ref = Firestore.firestore().collection("users").document(uid).collection("Transactions")
+        
+        
+        
+        let db = Firestore.firestore().collection("users").document(uid).collection("Transactions")
         
         let expense: [String : Any] = [
             "account": account,
@@ -140,9 +155,19 @@ struct AddNewExpense: View {
             ]
         
                   
-        let db = Firestore.firestore().collection("Transactions")
+        
      
-        db.addDocument(data: expense)
+        db.addDocument(data: expense) { error in
+            if let error = error {
+                print(error)
+                return
+            }
+            print("SUCCESS!!")
+        }
+        
+        
+        
+       // ref.setData(expense, completion: T##((Error?) -> Void)?##((Error?) -> Void)?##(Error?) -> Void)
         
         transaction.transaction.append(Transaction(expenseId: self.transaction.transaction.count + 1, date: date, institution: institution, account: account, merchant: merchant, amount: Double(amount)!, type: "Debit", categoryId: selectedCategory.id, category: selectedCategory.name, isPending: false, isTransfer: false, isExpense: true, isEdited: false))
         
