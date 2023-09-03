@@ -12,15 +12,14 @@ import Firebase
 
 struct LoginView: View {
     
-    @StateObject var transactionListVM = TransactionListViewModel()
-
+    @EnvironmentObject var transactionListVM: TransactionListViewModel
+    @EnvironmentObject var session: UserViewModel
     
     @State private var name: String = ""
     @State private var password: String = ""
     //Using @State to update the views on a struct, accessing the binding properties
     @State private var wrongUsername = 0
     @State private var wrongPassword = 0
-    @State private var showingLoginScreen = false
     
     
     var userVM: UserViewModel = UserViewModel()
@@ -28,30 +27,16 @@ struct LoginView: View {
     @State private var userIsLoggedIn: Bool = false
     @State private var registerButtonTapped: Bool = false
     
-    @State private var viewTitle: String = "Login"
-    @Environment(\.dismiss) var dismiss
     
+    @State private var viewTitle: String = "Login"
+   
+    @State private var showingSheet = false
+    
+    @State private var loginButtonTapped: Bool = false
 
     
     
     var body: some View {
-        
-        
-        
-        if userIsLoggedIn == true {
-            
-            //Becasue this view now becomes the ancestor of ViewModel, we need to add it to environment object
-            ContentView()
-                .environmentObject(transactionListVM)
-            
-            
-        } else {
-            content
-        }
-    }
-    
-    var content: some View {
-        
         
         NavigationView {
             ZStack {
@@ -84,32 +69,60 @@ struct LoginView: View {
                     
                     //MARK: Login
                     
-                    //If register button has not been tapped
                     if registerButtonTapped != true {
                         
                         
                         
                         Button("Login") {
+                            
                             print("tapped")
                             userVM.signOut()
                             
+                            
+                          
                             // Authenticate user
                             userVM.login(email: name, password: password)
                             Auth.auth().addStateDidChangeListener { auth, user in
                                 // if there is a user, toggle the boolean true
                                 if user != nil {
-                                    print("User is not Nil \(user?.email)" ?? "Email")
+                                    print("User is not Nil \(user?.email ?? "Email")")
                                     userIsLoggedIn.toggle()
+                                    
                                     transactionListVM.getExpenses()
+                                    if transactionListVM.transaction.isEmpty {
+                                        
+                                        print("LOGIN TRANS COUNT \(transactionListVM.transaction.count)")
+                                        //transactionListVM.transaction.removeAll()
+
+                                       // transactionListVM.getExpenses()
+                                        showingSheet.toggle()
+                                       return
+                                        
+                                    } else {
+                                       // transactionListVM.getExpenses()
+                                        print("SHEET TOGGLE COUNT IS MORE THAN 0")
+                                       // transactionListVM.transaction.removeAll()
+                                        showingSheet.toggle()
+                                    }
+                                    
                                 } else {
-                                    print("Error Logging in")
+                                    //print("Error Logging in")
                                 }
                             }
+                            
+                            
                         }
-                        //.foregroundColor(.white)
                         .frame(width: 300, height: 50)
                         .background (Color.green)
                         .cornerRadius (10)
+                        
+                        
+                        .fullScreenCover(isPresented: $showingSheet, content: {
+                            
+                            ContentView()
+                                .environmentObject(self.transactionListVM)
+                        })
+
                         
                         Button("No account?") {
                             print("tapped")
@@ -156,11 +169,7 @@ struct LoginView: View {
                         
                     }
                  
-                    
-               
-                    
-
-                } // end of Vstack
+                }
                 
             }
         }
@@ -169,8 +178,18 @@ struct LoginView: View {
 }
 
 struct LoginView_Previews: PreviewProvider {
+    static let transactionListVM: TransactionListViewModel = {
+     let transactionListVM = TransactionListViewModel()
+     transactionListVM.transaction = transactionListPreviewData
+     return transactionListVM
+ }()
+    
     static var previews: some View {
         LoginView()
+            .environmentObject(transactionListVM)
+        
+        ContentView()
+            .environmentObject(transactionListVM)
         
     }
 }

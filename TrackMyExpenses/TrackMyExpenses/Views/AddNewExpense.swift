@@ -128,9 +128,7 @@ struct AddNewExpense: View {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
-        
-       // let ref = Firestore.firestore().collection("users").document(uid).collection("Transactions")
-        
+                
         
         
         let db = Firestore.firestore().collection("users").document(uid).collection("Transactions")
@@ -153,9 +151,6 @@ struct AddNewExpense: View {
             "isTransfer" : false
             
             ]
-        
-                  
-        
      
         db.addDocument(data: expense) { error in
             if let error = error {
@@ -165,9 +160,6 @@ struct AddNewExpense: View {
             print("SUCCESS!!")
         }
         
-        
-        
-       // ref.setData(expense, completion: T##((Error?) -> Void)?##((Error?) -> Void)?##(Error?) -> Void)
         
         transaction.transaction.append(Transaction(expenseId: self.transaction.transaction.count + 1, date: date, institution: institution, account: account, merchant: merchant, amount: Double(amount)!, type: "Debit", categoryId: selectedCategory.id, category: selectedCategory.name, isPending: false, isTransfer: false, isExpense: true, isEdited: false))
         

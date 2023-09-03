@@ -27,9 +27,9 @@ struct TrackMyExpensesApp: App {
             
             LoginView()
                   .environmentObject(userVM)
+                  .environmentObject(transactionListVM)
             
-//            ContentView()
-//                .environmentObject(transactionListVM)
+            
         }
     }
 }

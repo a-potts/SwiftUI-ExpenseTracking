@@ -8,48 +8,66 @@
 import SwiftUI
 import SwiftUICharts
 
+
+
 struct ContentView: View {
-    @EnvironmentObject var transactionListsVM: TransactionListViewModel
-    //var demoData: [Double] = [8,2,4,5,7,9,12]
+    @EnvironmentObject private var transactionListsVM: TransactionListViewModel
+    
+    @EnvironmentObject var userVM: UserViewModel
     
     @State var lineChart = LineChart()
-  
+    
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var showLogin = false
+    
+    
+   
+    
     var body: some View {
-       
+        
         
         NavigationView {
             ScrollView {
                 VStackLayout(alignment: .leading, spacing: 24){
                     
-
+                    Divider()
                     
                     //MARK: Title
-                    Text("Total Expenses for \(Date().formatted(Date.FormatStyle().month(.wide)))")
+                    Text("Total Expenses for \(Date().formatted(Date.FormatStyle().year()))")
                         .font(.title2)
                         .bold()
+                        
+                       
+                        //MARK: Chart
                     
-                    //MARK: Chart
-                    var data = transactionListsVM.accumulateTransaction()
-                    if !data.isEmpty {
-                        var totalExpenses = data.last?.1 ?? 0
-                        CardView {
-                            VStack(alignment: .leading) {
-                                ChartLabel(totalExpenses.formatted(.currency(code: "USD")), type: .title, format: "$%.02f")
-                                
-                                lineChart
-                            }
-                                .background(Color.systemBackground)
+                        
+                        let data = transactionListsVM.accumulateTransaction()
+                        if !data.isEmpty {
+                            let totalExpenses = data.last?.1 ?? 0
+                            CardView {
+                                VStack(alignment: .leading) {
+                                    ChartLabel(totalExpenses.formatted(.currency(code: "USD")), type: .title, format: "$%.02f")
+                                    
+                                    lineChart
+                                }
+                                    .background(Color.systemBackground)
 
-                                
+                                    
+                            }
+                            //Modifiers
+                            
+                            .data(data)
+                            
+                            .chartStyle(ChartStyle(backgroundColor: Color.systemBackground, foregroundColor: ColorGradient(Color.red.opacity(0.4), Color.red)))
+                        
+                        .frame(height: 300)
+                        
+
                         }
-                        //Modifiers
-                        
-                        .data(data)
-                        
-                        .chartStyle(ChartStyle(backgroundColor: Color.systemBackground, foregroundColor: ColorGradient(Color.icon.opacity(0.4), Color.icon)))
                     
-                    .frame(height: 300)
-                    }
+                   
                  
                     
                     //MARK: Transaction List
@@ -59,17 +77,40 @@ struct ContentView: View {
                 .padding()
                 .frame(maxWidth: .infinity)
             }
+                
             //modifier for ScrollView
             .background(Color.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                //MARK: Notiifcation Icon
-//                ToolbarItem {
-//                    Image(systemName: "bell.badge")
-//                        // modifier
-//                        .symbolRenderingMode(.palette)
-//                        .foregroundStyle(Color.icon, .primary)
-//                }
+                //MARK: Logout Icon
+                ToolbarItem(placement: .navigationBarLeading) {
+                    
+                
+                  
+                //MARK: SIGN OUT Button
+                   
+                        
+                    Button(action:  {
+                        print("logout pressed")
+                        userVM.signOut()
+                      //  transactionListsVM.transaction.removeAll() // Causes duplicates
+                        
+                        dismiss()
+                        
+                        
+                    }) {
+                            Image(systemName: "rectangle.portrait.and.arrow.right")
+                                .symbolRenderingMode(.palette)
+                                .foregroundStyle(Color.red, .primary)
+                            Text("Sign Out")
+                                .bold()
+                                .foregroundColor(.red)
+                        }
+                   
+                    
+                }
+                
+                
                 //MARK: ADD Button for Navigation to Form
                 
                 ToolbarItem {
@@ -77,6 +118,8 @@ struct ContentView: View {
                     NavigationLink(destination: AddNewExpense()){
                         
                         Text("Add")
+                            .foregroundColor(Color.icon)
+                            .bold()
                         Image(systemName: "square.and.pencil")
                         // modifier
                             .symbolRenderingMode(.palette)
@@ -84,12 +127,19 @@ struct ContentView: View {
                     }
                 }
             }
+            
         }
         //modifier
         .navigationViewStyle(.stack)
         .accentColor(.primary)
-    }
-}
+        
+        
+       
+        
+    } // Var End
+    
+    
+} //Class End
 
 struct ContentView_Previews: PreviewProvider {
     static let transactionListVM: TransactionListViewModel = {
@@ -105,5 +155,7 @@ struct ContentView_Previews: PreviewProvider {
                 .preferredColorScheme(.dark)
         }
         .environmentObject(transactionListVM)
+        
+        
     }
 }

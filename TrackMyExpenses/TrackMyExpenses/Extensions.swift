@@ -25,7 +25,7 @@ extension Color {
 extension DateFormatter {
     
     static let allNumericUSA: DateFormatter = {
-        print("Init Date Formatter")
+      //  print("Init Date Formatter")
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
         
@@ -33,7 +33,7 @@ extension DateFormatter {
     }()
     
     static let contentDate: DateFormatter = {
-        print("Content Date")
+       // print("Content Date")
         let formatter = DateFormatter()
         formatter.dateFormat = "MM"
         

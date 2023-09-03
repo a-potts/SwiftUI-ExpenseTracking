@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		53585EC42AA3428000ECABF9 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53585EC32AA3428000ECABF9 /* SessionStore.swift */; };
 		535E94182A79467F00EA0221 /* TrackMyExpensesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94172A79467F00EA0221 /* TrackMyExpensesApp.swift */; };
 		535E941A2A79467F00EA0221 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535E94192A79467F00EA0221 /* ContentView.swift */; };
 		535E941C2A79468100EA0221 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 535E941B2A79468100EA0221 /* Assets.xcassets */; };
@@ -57,6 +58,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		53585EC32AA3428000ECABF9 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		535E94142A79467F00EA0221 /* TrackMyExpenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackMyExpenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		535E94172A79467F00EA0221 /* TrackMyExpensesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackMyExpensesApp.swift; sourceTree = "<group>"; };
 		535E94192A79467F00EA0221 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -144,11 +146,12 @@
 				53BF70DD2A87012B00033BC4 /* View Models */,
 				53D9B35F2A86F08500F63689 /* Views */,
 				535E94172A79467F00EA0221 /* TrackMyExpensesApp.swift */,
-				535E944E2A79CB6100EA0221 /* RecentTransactionList.swift */,
 				535E94502A7ACADF00EA0221 /* TransationLitst.swift */,
+				535E944E2A79CB6100EA0221 /* RecentTransactionList.swift */,
 				535E94412A7998AB00EA0221 /* Extensions.swift */,
 				535E941B2A79468100EA0221 /* Assets.xcassets */,
 				535E941D2A79468100EA0221 /* Preview Content */,
+				53585EC32AA3428000ECABF9 /* SessionStore.swift */,
 			);
 			path = TrackMyExpenses;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				53BF70E52A9A3BA300033BC4 /* LoginView.swift in Sources */,
 				53BF70DF2A87016B00033BC4 /* ExpenseViewModel.swift in Sources */,
 				535E94422A7998AB00EA0221 /* Extensions.swift in Sources */,
+				53585EC42AA3428000ECABF9 /* SessionStore.swift in Sources */,
 				535E944D2A79C55600EA0221 /* TransactionListViewModel.swift in Sources */,
 				535E94512A7ACADF00EA0221 /* TransationLitst.swift in Sources */,
 				535E94182A79467F00EA0221 /* TrackMyExpensesApp.swift in Sources */,

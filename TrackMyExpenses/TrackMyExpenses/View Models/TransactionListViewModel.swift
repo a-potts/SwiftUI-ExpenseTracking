@@ -11,6 +11,14 @@ import Collections
 import FirebaseFirestore
 import FirebaseAuth
 
+public extension Array where Element: Hashable {
+    func uniqued() -> [Element] {
+        var seen = Set<Element>()
+        return filter { seen.insert($0).inserted }
+    }
+}
+
+
 //Type Alias
 typealias TransactionGroup = OrderedDictionary<String, [Transaction]>
 //String represent date , double equals the sum
@@ -26,105 +34,100 @@ final class TransactionListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init(){
-       // getExpenses()
         //MARK: I commented this out because it causes a double fetch, bypassing the UUID depedency on the object causing fetched data for any user instead of specific one
     }
     
     
     //MARK: Fetch From Database
-    func getExpenses(){
-        
-        guard let uid = Auth.auth().currentUser?.uid else {
-            print("ERROR NO UUID")
-            return
-        }
-        
     
+    //ERROR: Upon signing out the login button does not fire this off
+    func getExpenses() {
         
-        // create db instance
-        
-        let db = Firestore.firestore()
-        
-        // create document reference using above with dot syntax
-        
-        let docRef = db.collection("users").document(uid).collection("Transactions")
-        
-        //use above url to iterate through the snapshot
-        
-        docRef.getDocuments { snapshot, error in
-            guard error == nil else {
-                print (error!.localizedDescription)
+      
+            
+            guard let uid = Auth.auth().currentUser?.uid else {
+                print("ERROR NO UUID")
                 return
-                
             }
             
-            if let snapshot = snapshot {
-                //Iterate through the snapshot values & append each value to the property array
-                for document in snapshot.documents {
-                    let data = document.data()
-                    
-                    let account = data["account"] as? String ?? ""
-                    let amount = data["amount"] as? Double ?? 0.0
-                    let category = data["category"] as? String ?? ""
-                    let categoryId = data["categoryId"] as? Int ?? 1
-                    let date = data["date"] as? String ?? ""
-                    let institution = data["institution"] as? String ?? ""
-                    let merchant = data["merchant"] as? String ?? ""
-                    let expenseId = data[""] as? Int ?? 1
-                    let type = data["type"] as? String ?? ""
-                    let isPending = data[""] as? Bool ?? false
-                    let isTransfer = data[""] as? Bool ?? false
-                    let isExpense = data[""] as? Bool ?? false
-                    let isEdited = data[""] as? Bool ?? false
-
-
-                    
-                    
-                    
-                    let newExpense = Transaction(expenseId: expenseId, date: date, institution: institution, account: account, merchant: merchant, amount: amount, type: type, categoryId: categoryId, category: category, isPending: isPending, isTransfer: isTransfer, isExpense: isExpense, isEdited: isEdited)
-                    self.transaction.append(newExpense)
+        
+            
+            // create db instance
+            
+            let db = Firestore.firestore()
+            
+            // create document reference using above with dot syntax
+            
+            let docRef = db.collection("users").document(uid).collection("Transactions")
+            
+            //use above url to iterate through the snapshot
+            
+            docRef.getDocuments { snapshot, error in
+                guard error == nil else {
+                    print (error!.localizedDescription)
+                    return
                     
                 }
+                
+                //Ensure there are no current transactions in the array before Loop iterates firebase snapshot to add to it
+                self.transaction.removeAll()
+                print("TRANSACTION SHEET COUNT HERE: \(self.transaction.count)")
+                
+                if self.transaction.count > 0 {
+                    print("TRANSACTION SHEET COUNT ZERO: \(self.transaction.count)")
+
+                    return
+                }
+
+                if let snapshot = snapshot {
+                    
+                    //Iterate through the snapshot values & append each value to the property array
+                    for document in snapshot.documents  {
+                        
+                        
+                        
+                        let data = document.data()
+                        
+                        let account = data["account"] as? String ?? ""
+                        let amount = data["amount"] as? Double ?? 0.0
+                        let category = data["category"] as? String ?? ""
+                        let categoryId = data["categoryId"] as? Int ?? 1
+                        let date = data["date"] as? String ?? ""
+                        let institution = data["institution"] as? String ?? ""
+                        let merchant = data["merchant"] as? String ?? ""
+                        let expenseId = data[""] as? Int ?? 1
+                        let type = data["type"] as? String ?? ""
+                        let isPending = data[""] as? Bool ?? false
+                        let isTransfer = data[""] as? Bool ?? false
+                        let isExpense = data[""] as? Bool ?? false
+                        let isEdited = data[""] as? Bool ?? false
+
+
+                        
+                        
+                        
+                        let newExpense = Transaction(expenseId: expenseId, date: date, institution: institution, account: account, merchant: merchant, amount: amount, type: type, categoryId: categoryId, category: category, isPending: isPending, isTransfer: isTransfer, isExpense: isExpense, isEdited: isEdited)
+                        
+                        
+                        
+                            self.transaction.append(newExpense)
+                        
+                        
+                        
+
+                        
+                        
+                    }
+                    
+                }
+                
             }
-            
-        }
+        
         
     }
     
     
-    func getTransactions(){
-        
-        guard let url = URL(string: "https://designcode.io/data/transactions.json") else {
-            print("Invalid URL")
-            return
-        }
-        
-        //Data task publisher is from Combine
-        URLSession.shared.dataTaskPublisher(for: url)
-            .tryMap { (data, response) -> Data in
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                    //Dump is similar to print, good for large objects
-                    dump(response)
-                    throw URLError(.badServerResponse)
-                }
-                return data
-            }
-            .decode(type: [Transaction].self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    print("Error Fetching Transactions", error.localizedDescription)
-                case .finished:
-                    print("Finished Fetching Transactions")
-                }
-                
-            } receiveValue: { [weak self] result in
-                self?.transaction = result
-                dump(self?.transaction)
-            }
-            .store(in: &cancellables)
-    }
+  
     
     func groupTransactionByMonth() -> TransactionGroup {
         guard !transaction.isEmpty else {return [:]}
@@ -142,6 +145,7 @@ final class TransactionListViewModel: ObservableObject {
             return []
             
         }
+       
         
         print("FULL - \(transaction.count)")
         
@@ -149,8 +153,23 @@ final class TransactionListViewModel: ObservableObject {
         formatter.dateFormat = "MM/dd/yyyy"
         let newToday = formatter.string(from: Date.now)
         
-        let today = newToday.dateParse() // should be Date() FIX
-        let dateInterval = Calendar.current.dateInterval(of: .month, for: today)!
+        let today = newToday.dateParse()
+        
+        
+//        //This for some reason works, but the newtoday below does not
+        let oldToday = "07/31/2023"
+        let oldTodayDate = formatter.date(from: oldToday)
+        let oldestToday = oldToday.dateParse()
+//
+//
+//        // "09/01/2023" doesnt work
+//        let today = "\(Date())"
+//        let newestToday = formatter.date(from: today)
+//        newestToday.dateParse()
+//        print("NEW TODAY \(newToday)")
+        
+        
+        let dateInterval = Calendar.current.dateInterval(of: .month, for: oldestToday)! //of the month that includes today
         print("dateInterval", dateInterval)
         
         //single value
@@ -158,26 +177,29 @@ final class TransactionListViewModel: ObservableObject {
         //set of values
         var accumulatedSum = TransactionPrefixSum()
         
+        //Stride throuhg unwanted properties to get full day with int value below
         for date in stride(from: dateInterval.start, through: today, by: 60 * 60 * 24) {
             
             
             let dailyExpenses = transaction.filter({ $0.dateParse == date })
-            print("Daily Expense \(dailyExpenses)")
-            print("Transaction Expense \(transaction)")
-
-            let dailyTotal = dailyExpenses.reduce(0) { $0 - $1.signedAmount }
             
-            print("Daily Total \(dailyTotal)")
+          //  print("Daily Expense \(dailyExpenses)")
+           // print("Transaction Expense \(transaction)")
+
+            let dailyTotal = dailyExpenses.reduce(0) { $0 + $1.signedAmount } //sum using reduce of those filtered amounts
+            
+           // print("Daily Total \(dailyTotal)")
 
             sum += dailyTotal
             sum = sum.roundedTo2Digits()
             accumulatedSum.append((date.formatted(), sum))
+           // print("ACCUMULATED SUM \(accumulatedSum)")
             
-            //MARK: Error - daily total & sum are 0
-            
-            print(date.formatted(), "daily total", dailyTotal, "sum", sum)
+         //   print(date.formatted(), "daily total", dailyTotal, "sum", sum)
             
         }
+        
+        
         return accumulatedSum
 
     }
