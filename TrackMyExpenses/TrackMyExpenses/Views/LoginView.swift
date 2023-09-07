@@ -28,7 +28,9 @@ struct LoginView: View {
     @State private var registerButtonTapped: Bool = false
     
     
-    @State private var viewTitle: String = "Login"
+    @State private var viewTitle: String = "Welcome!"
+    @State private var vregisterTitle: String = "Register"
+
    
     @State private var showingSheet = false
     
@@ -78,8 +80,6 @@ struct LoginView: View {
                             print("tapped")
                             userVM.signOut()
                             
-                            
-                          
                             // Authenticate user
                             userVM.login(email: name, password: password)
                             Auth.auth().addStateDidChangeListener { auth, user in
@@ -90,28 +90,23 @@ struct LoginView: View {
                                     
                                     transactionListVM.getExpenses()
                                     if transactionListVM.transaction.isEmpty {
-                                        
-                                        print("LOGIN TRANS COUNT \(transactionListVM.transaction.count)")
-                                        //transactionListVM.transaction.removeAll()
-
-                                       // transactionListVM.getExpenses()
+                                    
                                         showingSheet.toggle()
                                        return
                                         
                                     } else {
-                                       // transactionListVM.getExpenses()
-                                        print("SHEET TOGGLE COUNT IS MORE THAN 0")
-                                       // transactionListVM.transaction.removeAll()
+                                     
                                         showingSheet.toggle()
                                     }
                                     
                                 } else {
-                                    //print("Error Logging in")
                                 }
                             }
                             
                             
                         }
+                        .foregroundColor(.white)
+                        .bold()
                         .frame(width: 300, height: 50)
                         .background (Color.green)
                         .cornerRadius (10)
@@ -133,39 +128,66 @@ struct LoginView: View {
                             
                          
                             // Authenticate user
-                            userVM.registerVM(email: name, password: password)
-                            transactionListVM.getExpenses()
-                            
+                         //   userVM.registerVM(email: name, password: password)
+                          //  transactionListVM.getExpenses()
+                            self.viewTitle = "Register"
                             
                         }
-                        //.foregroundColor(.white)
+                        .foregroundColor(Color.icon)
+                        .bold()
                         
-                    } else {
+                    }
+                    
+                    if registerButtonTapped == true {
                         //MARK: Register
                         Button("Register") {
                             
-                            self.viewTitle = "Register"
+                          
+                            
                             
                             print("tapped")
                             
                             // Authenticate user
                             userVM.signOut()
                             userVM.registerVM(email: name, password: password)
-                            registerButtonTapped.toggle()
+                            
                             Auth.auth().addStateDidChangeListener { auth, user in
                                 // if there is a user, toggle the boolean true
                                 if user != nil {
                                     print(user?.email ?? "Error Logging In")
                                     userIsLoggedIn.toggle()
+                                    showingSheet.toggle()
+                                    self.viewTitle = "Login"
+                                    registerButtonTapped.toggle() //to false
+                                    
                                 } else {
                                     print("Error Register")
                                 }
                             }
                         }
+                        .bold()
                         .foregroundColor(.white)
                         .frame(width: 300, height: 50)
                         .background (Color.blue)
                         .cornerRadius (10)
+                        .fullScreenCover(isPresented: $showingSheet, content: {
+                            
+                            ContentView()
+                                .environmentObject(self.transactionListVM)
+                        })
+                        
+                        Button("Have an account?") {
+                            print("tapped")
+                            
+                            //Toggle a boolean that lets the view know to change i.e register tapped = true
+                            registerButtonTapped.toggle()
+                            //If true, replace login button + logic with register button + logic
+                            self.viewTitle = "Welcome!"
+                         
+                            
+                        }
+                        .bold()
+                        .foregroundColor(Color.icon)
                         
                     }
                  
